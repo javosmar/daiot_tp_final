@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mi Aplicación IoT</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+
+  <!-- TARJETAS -->
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col size="12" size-lg *ngFor="let e of array">
+
+        <ion-card button routerLink="/dispositivo/{{e.dispositivoId}}">
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="thermometer-outline"></ion-icon>{{ e.ubicacion }}
+            </ion-card-title>
+            <ion-card-subtitle>
+              ID del dispositivo: {{ e.dispositivoId }}
+            </ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>
+              {{ e.nombre }}
+            </p>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>
