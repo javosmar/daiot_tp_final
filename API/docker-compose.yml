@@ -10,7 +10,7 @@ version: "3"
 services:
   node-red:
     container_name: nodered_docker
-    image: nodered/node-red:latest
+    image: nodered-daiot:latest
     environment:
       - TZ=Europe/Amsterdam
     ports:

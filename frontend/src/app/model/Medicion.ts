@@ -13,10 +13,12 @@ export class Medicion {
     // private _valor: number;
     private _dispositivoId: number;
 
-    constructor(medId: number, fecha: string, valor: number, dispId: number){
+    constructor(medId: number, fecha: string, temp: number, hum: number, dispId: number){
         this._medicionId = medId;
         this._fecha = fecha;
-        this._valor = valor;
+        this._temp = temp;
+        this._hum = hum;
+        // this._valor = valor;
         this._dispositivoId = dispId;
     }
 

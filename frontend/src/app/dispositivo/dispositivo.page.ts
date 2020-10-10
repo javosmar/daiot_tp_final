@@ -26,7 +26,7 @@ export class DispositivoPage implements OnInit {
 
   id: number;
   public dispositivo = new Dispositivo(0, " ", " ", 0);
-  public medicion = new Medicion(0, ' ', 0, 0);
+  public medicion = new Medicion(0, ' ', 0, 0, 0);
 
   constructor(private dispositivoServ: DispositivoService, private medicionServ: MedicionService, private route: ActivatedRoute) { }
 
