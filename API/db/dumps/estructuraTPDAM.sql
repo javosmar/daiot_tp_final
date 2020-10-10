@@ -57,7 +57,8 @@ DROP TABLE IF EXISTS `DAM`.`Mediciones` ;
 CREATE TABLE IF NOT EXISTS `DAM`.`Mediciones` (
   `medicionId` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATETIME NULL,
-  `valor` VARCHAR(100) NULL,
+  `temp` VARCHAR(100) NULL,
+  `hum` VARCHAR(100) NULL,
   `dispositivoId` INT NOT NULL,
   PRIMARY KEY (`medicionId`, `dispositivoId`),
   INDEX `fk_Mediciones_Dispositivos_idx` (`dispositivoId` ASC) ,
@@ -67,6 +68,22 @@ CREATE TABLE IF NOT EXISTS `DAM`.`Mediciones` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+/* DROP TABLE IF EXISTS `DAM`.`Mediciones` ;
+
+CREATE TABLE IF NOT EXISTS `DAM`.`Mediciones` (
+  `medicionId` INT NOT NULL AUTO_INCREMENT,
+  `fecha` DATETIME NULL,
+  `valor` VARCHAR(100) NULL,
+  `dispositivoId` INT NOT NULL,
+  PRIMARY KEY (`medicionId`, `dispositivoId`),
+  INDEX `fk_Mediciones_Dispositivos_idx` (`dispositivoId` ASC) ,
+  CONSTRAINT `fk_Mediciones_Dispositivos`
+    FOREIGN KEY (`dispositivoId`)
+    REFERENCES `DAM`.`Dispositivos` (`dispositivoId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB; */
 
 
 -- -----------------------------------------------------
@@ -112,7 +129,19 @@ INSERT INTO DAM.Dispositivos (nombre,ubicacion,electrovalvulaId) VALUES ('Sensor
 INSERT INTO DAM.Dispositivos (nombre,ubicacion,electrovalvulaId) VALUES ('Sensor 6', 'Habitacion 2',6);
 
 
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),60,1 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),60,14,1 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),40,45,1 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),30,21,2 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),50,87,3 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),33,86,5 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),17,23,4 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),29,1,6 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),20,32,1 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),44,90,4 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),61,87,5 );
+INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),12,87,2 );
+
+/* INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),60,1 );
 INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),40,1 );
 INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),30,2 );
 INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),50,3 );
@@ -122,4 +151,4 @@ INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp
 INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),20,1 );
 INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),44,4 );
 INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),61,5 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),12,2 );
+INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),12,2 ); */

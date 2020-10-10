@@ -8,13 +8,17 @@
 export class Medicion {
     private _medicionId: number;
     private _fecha: string;
-    private _valor: number;
+    private _temp: number;
+    private _hum: number;
+    // private _valor: number;
     private _dispositivoId: number;
 
-    constructor(medId: number, fecha: string, valor: number, dispId: number){
+    constructor(medId: number, fecha: string, temp: number, hum: number, dispId: number){
         this._medicionId = medId;
         this._fecha = fecha;
-        this._valor = valor;
+        this._temp = temp;
+        this._hum = hum;
+        // this._valor = valor;
         this._dispositivoId = dispId;
     }
 
@@ -30,12 +34,24 @@ export class Medicion {
     public set fecha(value: string) {
         this._fecha = value;
     }
-    public get valor(): number {
+    public get temp(): number {
+        return this._temp;
+    }
+    public set temp(value: number) {
+        this._temp = value;
+    }
+    public get hum(): number {
+        return this._hum;
+    }
+    public set hum(value: number) {
+        this._hum = value;
+    }
+    /* public get valor(): number {
         return this._valor;
     }
     public set valor(value: number) {
         this._valor = value;
-    }
+    } */
     public get dispositivoId(): number {
         return this._dispositivoId;
     }

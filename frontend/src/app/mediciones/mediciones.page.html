@@ -33,23 +33,18 @@
 
 
       <ion-card>
+
         <ion-card-header>
           <ion-card-title>Opciones</ion-card-title>
         </ion-card-header>
+
         <ion-card-content>
-          <ion-item>
-            <ion-label>Line chart?</ion-label>
-            <ion-toggle (ionChange)="typeChanged($event)" checked></ion-toggle>
-          </ion-item>
           <ion-item>
             <ion-label>Mostrar Leyenda</ion-label>
             <ion-toggle [(ngModel)]="showLegend"></ion-toggle>
           </ion-item>
-          <!-- <ion-item>
-            <ion-label>Color Hexadecimal</ion-label>
-            <ion-input type="text" [(ngModel)]="chartColors[0].backgroundColor"></ion-input>
-          </ion-item> -->
         </ion-card-content>
+
       </ion-card>
 
       <ion-card>
@@ -61,14 +56,19 @@
           </ion-card-header>
 
           <ion-row>
-            <ion-col col-4>
+            <ion-col col-4 text-center>
               <ion-item>
                 Fecha
               </ion-item>
             </ion-col>
-            <ion-col col-4>
+            <ion-col col-4 text-center>
               <ion-item>
-                Valor
+                Temperatura
+              </ion-item>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <ion-item>
+                Humedad
               </ion-item>
             </ion-col>
           </ion-row>
@@ -81,7 +81,12 @@
             </ion-col>
             <ion-col col-4>
               <ion-item>
-                {{medicion.valor}}
+                {{medicion.temp}}
+              </ion-item>
+            </ion-col>
+            <ion-col col-4>
+              <ion-item>
+                {{medicion.hum}}
               </ion-item>
             </ion-col>
           </ion-row>

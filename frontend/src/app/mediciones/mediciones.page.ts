@@ -17,7 +17,7 @@ export class MedicionesPage implements OnInit {
 
   public mediciones: Medicion[];
 
-  chartData: ChartDataSets[] = [{ data: [], label: 'Temperatura' }];
+  chartData: ChartDataSets[] = [{ data: [], label: 'Temperatura' }, { data: [], label: 'Humedad' }];
   chartLabels: Label[];
 
   chartOptions = {
@@ -32,7 +32,7 @@ export class MedicionesPage implements OnInit {
     },
     zoom: {
       enabled: true,
-      mode: 'xy'
+      mode: 'x'
     },
     scales: {
       yAxes: [{
@@ -42,6 +42,12 @@ export class MedicionesPage implements OnInit {
 
           // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
           suggestedMax: 50
+        }
+      }],
+      xAxes: [{
+        type: 'time',
+        time: {
+          unit: 'minute'
         }
       }]
     }
@@ -63,7 +69,7 @@ export class MedicionesPage implements OnInit {
   async ionViewWillEnter() {
     let idDipositivo = +this.route.snapshot.paramMap.get('id');
     this.mediciones = await this.medicionServ.getMediciones(idDipositivo);
-    for (let medicion of this.mediciones){
+    for (let medicion of this.mediciones) {
       medicion.fecha = new Date(medicion.fecha).toISOString().replace(/T/, ' ').replace(/\..+/, '');
     }
     this.getData();
@@ -72,12 +78,14 @@ export class MedicionesPage implements OnInit {
   async getData() {
     this.chartLabels = [];
     this.chartData[0].data = [];
+    this.chartData[1].data = [];
 
     console.log(this.mediciones);
 
     for (let entry of this.mediciones) {
       this.chartLabels.push(entry.fecha);
-      this.chartData[0].data.push(entry['valor']);
+      this.chartData[0].data.push(entry['temp']);
+      this.chartData[1].data.push(entry['hum']);
     }
     console.log(this.chartLabels);
     console.log(this.chartData);
