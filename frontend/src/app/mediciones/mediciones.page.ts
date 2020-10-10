@@ -32,7 +32,7 @@ export class MedicionesPage implements OnInit {
     },
     zoom: {
       enabled: true,
-      mode: 'xy'
+      mode: 'x'
     },
     scales: {
       yAxes: [{
@@ -42,6 +42,12 @@ export class MedicionesPage implements OnInit {
 
           // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
           suggestedMax: 50
+        }
+      }],
+      xAxes: [{
+        type: 'time',
+        time: {
+          unit: 'minute'
         }
       }]
     }
@@ -63,7 +69,7 @@ export class MedicionesPage implements OnInit {
   async ionViewWillEnter() {
     let idDipositivo = +this.route.snapshot.paramMap.get('id');
     this.mediciones = await this.medicionServ.getMediciones(idDipositivo);
-    for (let medicion of this.mediciones){
+    for (let medicion of this.mediciones) {
       medicion.fecha = new Date(medicion.fecha).toISOString().replace(/T/, ' ').replace(/\..+/, '');
     }
     this.getData();
