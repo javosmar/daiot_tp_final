@@ -26,6 +26,7 @@ router.get('/todas/:id', (req, res, next) => {
         if (err) {
             res.status(500).send('Error en la consulta');
         }
+        console.log(result);
         res.status(200).json(result);
     });
 });

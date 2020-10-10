@@ -77,7 +77,7 @@ export class MedicionesPage implements OnInit {
 
     for (let entry of this.mediciones) {
       this.chartLabels.push(entry.fecha);
-      this.chartData[0].data.push(entry['valor']);
+      this.chartData[0].data.push(entry['temp']);
     }
     console.log(this.chartLabels);
     console.log(this.chartData);

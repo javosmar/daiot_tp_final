@@ -28,9 +28,9 @@
         </ion-card-header>
 
         <ion-card-content>
-          <ion-button *ngIf="medicion.valor > 30" appColorBoton expand="block" (click)="operarElectrovalvula()">ABRIR
+          <ion-button *ngIf="medicion.temp > 30" appColorBoton expand="block" (click)="operarElectrovalvula()">ABRIR
             ELECTROVÁLVULA</ion-button>
-          <ion-button *ngIf="medicion.valor <= 30" expand="block" (click)="operarElectrovalvula()">ABRIR ELECTROVÁLVULA
+          <ion-button *ngIf="medicion.temp <= 30" expand="block" (click)="operarElectrovalvula()">ABRIR ELECTROVÁLVULA
           </ion-button>
           <ion-button color="secondary" expand="block" routerLink="/mediciones/{{id}}">VER TODAS LAS MEDICIONES
           </ion-button>

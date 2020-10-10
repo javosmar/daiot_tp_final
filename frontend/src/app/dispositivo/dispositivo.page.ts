@@ -43,7 +43,7 @@ export class DispositivoPage implements OnInit {
 
   ionViewDidEnter() {
     this.generarChart(this.dispositivo);
-    this.updateChart(+this.medicion.valor);
+    this.updateChart(+this.medicion.temp, +this.medicion.hum);
   }
 
   /**
@@ -65,7 +65,7 @@ export class DispositivoPage implements OnInit {
         clearInterval(intervalObj);
         this.dispositivoServ.postElectrovalvula(0,this.dispositivo.electrovalvulaId);
         this.medicionServ.postMedicion(valor, this.dispositivo.dispositivoId);
-        this.updateChart(valor);
+        this.updateChart(valor, 1);
       }
     }, 500);
     // ************************************************************************************
@@ -73,8 +73,8 @@ export class DispositivoPage implements OnInit {
     
   }
 
-  updateChart(newValue: number) {
-    this.valorObtenido = newValue;
+  updateChart(newTemp: number, newHum: number) {
+    this.valorObtenido = newTemp;
     this.myChart.update({
       series: [{
         name: 'Temp',
@@ -85,6 +85,7 @@ export class DispositivoPage implements OnInit {
       }]
     });
 
+    this.valorObtenido = newHum;
     this.myChart2.update({
       series: [{
         name: 'Hum',
@@ -106,7 +107,7 @@ export class DispositivoPage implements OnInit {
         plotShadow: false
       }
       , title: {
-        text: this.dispositivo.nombre
+        text: 'Temperatura' /* this.dispositivo.nombre */
       }
 
       , credits: { enabled: false }
@@ -174,7 +175,7 @@ export class DispositivoPage implements OnInit {
         plotShadow: false
       }
       , title: {
-        text: this.dispositivo.nombre
+        text: 'Humedad' /* this.dispositivo.nombre */
       }
 
       , credits: { enabled: false }
