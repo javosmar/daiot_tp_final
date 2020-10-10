@@ -9,12 +9,15 @@ import { MedicionesPageRoutingModule } from './mediciones-routing.module';
 import { MedicionesPage } from './mediciones.page';
 import { FormatoFechaPipe } from '../pipes/formato-fecha.pipe';
 
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MedicionesPageRoutingModule
+    MedicionesPageRoutingModule,
+    ChartsModule
   ],
   declarations: [MedicionesPage, FormatoFechaPipe]
 })

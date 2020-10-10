@@ -19,7 +19,9 @@ export class DispositivoPage implements OnInit {
 
   private valorObtenido: number = 0;
   public myChart;
+  public myChart2;
   private chartOptions;
+  private chartOptions2;
 
 
   id: number;
@@ -75,10 +77,20 @@ export class DispositivoPage implements OnInit {
     this.valorObtenido = newValue;
     this.myChart.update({
       series: [{
-        name: 'kPA',
+        name: 'Temp',
         data: [this.valorObtenido],
         tooltip: {
-          valueSuffix: ' kPA'
+          valueSuffix: ' ºC'
+        }
+      }]
+    });
+
+    this.myChart2.update({
+      series: [{
+        name: 'Hum',
+        data: [this.valorObtenido],
+        tooltip: {
+          valueSuffix: ' %'
         }
       }]
     });
@@ -125,7 +137,7 @@ export class DispositivoPage implements OnInit {
           rotation: 'auto'
         },
         title: {
-          text: 'kPA'
+          text: 'ºC'
         },
         plotBands: [{
           from: 0,
@@ -144,15 +156,86 @@ export class DispositivoPage implements OnInit {
       ,
 
       series: [{
-        name: 'kPA',
+        name: 'Temp',
         data: [this.valorObtenido],
         tooltip: {
-          valueSuffix: ' kPA'
+          valueSuffix: ' ºC'
         }
       }]
 
     };
+
+    this.chartOptions2 = {
+      chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+      }
+      , title: {
+        text: this.dispositivo.nombre
+      }
+
+      , credits: { enabled: false }
+
+
+      , pane: {
+        startAngle: -150,
+        endAngle: 150
+      }
+      // the value axis
+      , yAxis: {
+        min: 0,
+        max: 100,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+          step: 2,
+          rotation: 'auto'
+        },
+        title: {
+          text: '%'
+        },
+        plotBands: [{
+          from: 0,
+          to: 10,
+          color: '#55BF3B' // green
+        }, {
+          from: 10,
+          to: 30,
+          color: '#DDDF0D' // yellow
+        }, {
+          from: 30,
+          to: 100,
+          color: '#DF5353' // red
+        }]
+      }
+      ,
+
+      series: [{
+        name: 'Hum',
+        data: [this.valorObtenido],
+        tooltip: {
+          valueSuffix: ' %'
+        }
+      }]
+
+    };
+
     this.myChart = Highcharts.chart('highcharts', this.chartOptions);
+
+    this.myChart2 = Highcharts.chart('highcharts2', this.chartOptions2);
   }
 
 }

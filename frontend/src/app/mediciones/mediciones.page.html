@@ -1,4 +1,5 @@
 <ion-header>
+
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button icon="return-up-back-outline"></ion-back-button>
@@ -10,8 +11,8 @@
       Mediciones
     </ion-title>
   </ion-toolbar>
-</ion-header>
 
+</ion-header>
 
 <ion-content>
 
@@ -19,8 +20,45 @@
     <ion-col sizeXl="6" text-center>
 
       <ion-card>
+        <ion-card-header>
+          <ion-card-title>Gráfico</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+            [colors]="chartColors" [legend]="showLegend" [chartType]="chartType">
+          </canvas>
+        </ion-card-content>
+      </ion-card>
+
+
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Opciones</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Line chart?</ion-label>
+            <ion-toggle (ionChange)="typeChanged($event)" checked></ion-toggle>
+          </ion-item>
+          <ion-item>
+            <ion-label>Mostrar Leyenda</ion-label>
+            <ion-toggle [(ngModel)]="showLegend"></ion-toggle>
+          </ion-item>
+          <!-- <ion-item>
+            <ion-label>Color Hexadecimal</ion-label>
+            <ion-input type="text" [(ngModel)]="chartColors[0].backgroundColor"></ion-input>
+          </ion-item> -->
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
 
         <ion-card-content *ngIf="mediciones?.length > 0">
+
+          <ion-card-header>
+            <ion-card-title>Tabla de valores</ion-card-title>
+          </ion-card-header>
 
           <ion-row>
             <ion-col col-4>
@@ -60,6 +98,5 @@
 
     </ion-col>
   </ion-row>
-
 
 </ion-content>
