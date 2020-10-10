@@ -17,7 +17,7 @@ export class MedicionesPage implements OnInit {
 
   public mediciones: Medicion[];
 
-  chartData: ChartDataSets[] = [{ data: [], label: 'Temperatura' }];
+  chartData: ChartDataSets[] = [{ data: [], label: 'Temperatura' }, { data: [], label: 'Humedad' }];
   chartLabels: Label[];
 
   chartOptions = {
@@ -72,12 +72,14 @@ export class MedicionesPage implements OnInit {
   async getData() {
     this.chartLabels = [];
     this.chartData[0].data = [];
+    this.chartData[1].data = [];
 
     console.log(this.mediciones);
 
     for (let entry of this.mediciones) {
       this.chartLabels.push(entry.fecha);
       this.chartData[0].data.push(entry['temp']);
+      this.chartData[1].data.push(entry['hum']);
     }
     console.log(this.chartLabels);
     console.log(this.chartData);
