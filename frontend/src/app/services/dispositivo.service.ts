@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Dispositivo } from '../model/Dispositivo';
+import { Riego } from '../model/Riego';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -61,6 +62,21 @@ export class DispositivoService {
     const url = this.url + '/api/dispositivo/electrovalvula';
     return this.httpServ.post(url, dato).toPromise().then((result) => {
       return result;
+    });
+  }
+
+  /**
+   * Obtiene el estado más reciente de una electroválvula
+   * @param id El ID del dispositivo
+   * @returns Una promesa donde se devuelve el etado booleano
+   */
+  getEstadoEv(id): Promise<number> {
+    const url = `${this.url}/api/dispositivo/riego/${id}`;
+    return this.httpServ.get(url).toPromise().then((objeto: Riego) => {
+      return objeto.apertura;
+    }).catch((err) => {
+      console.log('Error en la consulta');
+      return null;
     });
   }
 
