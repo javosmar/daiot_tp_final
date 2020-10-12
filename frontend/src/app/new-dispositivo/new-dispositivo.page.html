@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nuevo Dispositivo</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+
+  <!-- TARJETAS -->
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col>
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              Registre los datos del nuevo dispositivo
+            </ion-card-title>
+            <ion-card-subtitle>
+
+            </ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <form [formGroup]="formGroup" (submit)="guardarDispositivo()">
+
+              <ion-item>
+                <ion-label position="stacked">Encontrará la información en la etiqueta al dorso de la caja</ion-label>
+                <ion-input name="clientId" formControlName="clientId" type="text" placeholder="ID de Cliente"></ion-input>
+                <ion-input name="nombre" formControlName="nombre" type="text" placeholder="Nombre"></ion-input>
+                <ion-input name="ubicacion" formControlName="ubicacion" type="text" placeholder="Ubicación"></ion-input>
+              </ion-item>
+              <br>
+              <div class="text-danger" *ngIf="formGroup.controls.clientId.invalid && formGroup.controls.clientId.touched">
+                El ID de Cliente es requerido
+              </div>
+              <br>
+              <div class="text-danger" *ngIf="formGroup.controls.nombre.invalid && formGroup.controls.nombre.touched">
+                El nombre es requerido
+              </div>
+              <br>
+              <div class="text-danger"
+                *ngIf="formGroup.controls.ubicacion.invalid && formGroup.controls.ubicacion.touched">
+                La ubicación es requerida
+              </div>
+              <br>
+
+              <ion-button color="success" type="submit" [disabled]="formGroup.invalid">Guardar</ion-button>
+
+            </form>
+
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

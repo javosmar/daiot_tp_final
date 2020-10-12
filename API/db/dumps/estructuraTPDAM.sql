@@ -36,6 +36,7 @@ DROP TABLE IF EXISTS `DAM`.`Dispositivos` ;
 
 CREATE TABLE IF NOT EXISTS `DAM`.`Dispositivos` (
   `dispositivoId` INT NOT NULL AUTO_INCREMENT,
+  `clientId` VARCHAR(200) NULL,
   `nombre` VARCHAR(200) NULL,
   `ubicacion` VARCHAR(200) NULL,
   `electrovalvulaId` INT NOT NULL,
@@ -121,12 +122,12 @@ INSERT INTO DAM.Electrovalvulas (nombre) VALUES ('eLHabitacion1');
 INSERT INTO DAM.Electrovalvulas (nombre) VALUES ('eLHabitacion2');
 
 
-INSERT INTO DAM.Dispositivos (nombre,ubicacion,electrovalvulaId) VALUES ('Sensor 1', 'Patio',1);
-INSERT INTO DAM.Dispositivos (nombre,ubicacion,electrovalvulaId) VALUES ('Sensor 2', 'Cocina',2);
-INSERT INTO DAM.Dispositivos (nombre,ubicacion,electrovalvulaId) VALUES ('Sensor 3', 'Jardin Delantero',3);
-INSERT INTO DAM.Dispositivos (nombre,ubicacion,electrovalvulaId) VALUES ('Sensor 4', 'Living',4);
-INSERT INTO DAM.Dispositivos (nombre,ubicacion,electrovalvulaId) VALUES ('Sensor 5', 'Habitacion 1',5);
-INSERT INTO DAM.Dispositivos (nombre,ubicacion,electrovalvulaId) VALUES ('Sensor 6', 'Habitacion 2',6);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-1','Sensor 1', 'Patio',1);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-2','Sensor 2', 'Cocina',2);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-3','Sensor 3', 'Jardin Delantero',3);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-4','Sensor 4', 'Living',4);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-5','Sensor 5', 'Habitacion 1',5);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-6','Sensor 6', 'Habitacion 2',6);
 
 
 INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),60,14,1 );
