@@ -12,10 +12,17 @@ import { HttpClientModule } from '@angular/common/http';
 
 import 'chartjs-plugin-zoom';
 
+import { MqttModule, IMqttServiceOptions } from "ngx-mqtt";
+
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: 'localhost',
+  port: 9001
+}
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, MqttModule.forRoot(MQTT_SERVICE_OPTIONS)],
   providers: [
     StatusBar,
     SplashScreen,

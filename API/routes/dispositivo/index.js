@@ -29,6 +29,20 @@ router.get('/:id', (req, res, next) => {
 });
 
 /**
+ * Obtengo el último estado de la electrovávula del dispositivo con el id recibido como parámetro
+ * @param id ID del dispositivo
+ */
+router.get('/riego/:id', (req, res, next) => {
+    const { id } = req.params;
+    pool.query('SELECT * FROM Log_Riegos WHERE electrovalvulaId=? ORDER BY fecha DESC', [id], function (err, result) {
+        if (err) {
+            res.status(500).send('Error en la consulta');
+        }
+        res.status(200).json(result[0]);
+    });
+});
+
+/**
  * Almaceno en la tabla 'Log_Riegos' un nueva apertura
  * @param {apertura, fecha, electrovalvulaId}
  */

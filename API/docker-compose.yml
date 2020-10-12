@@ -17,8 +17,6 @@ services:
       - "5600:1880"
     networks:
       - daiot-net
-    volumes:
-      - node-red-data
   
   mosquitto:
     container_name: mosquitto_docker
@@ -28,6 +26,8 @@ services:
       - "1884:1883"
     networks:
       - daiot-net
+    volumes:
+      - "./mosquitto:/mosquitto"
     
   mysql-server:
     image: mysql:5.7

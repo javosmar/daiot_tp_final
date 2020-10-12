@@ -1,9 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DispositivoService } from '../services/dispositivo.service';
 import { Dispositivo } from '../model/Dispositivo';
 import { MedicionService } from '../services/medicion.service';
 import { Medicion } from '../model/Medicion';
+
+import { Subscription } from 'rxjs';
+import { IMqttMessage, MqttService } from 'ngx-mqtt';
 
 import * as Highcharts from 'highcharts';
 declare var require: any;
@@ -15,32 +18,64 @@ require('highcharts/modules/solid-gauge')(Highcharts);
   templateUrl: './dispositivo.page.html',
   styleUrls: ['./dispositivo.page.scss'],
 })
-export class DispositivoPage implements OnInit {
+export class DispositivoPage implements OnInit, OnDestroy {
 
   private valorObtenido: number = 0;
+  private estadoEv: number = 0;
+
+  // Gauges Charts
   public myChart;
   public myChart2;
   private chartOptions;
   private chartOptions2;
 
-
+  // Models initialization
   id: number;
   public dispositivo = new Dispositivo(0, " ", " ", 0);
   public medicion = new Medicion(0, ' ', 0, 0, 0);
 
-  constructor(private dispositivoServ: DispositivoService, private medicionServ: MedicionService, private route: ActivatedRoute) { }
+  // MQTT
+  private subscription: Subscription;
+  topicname: any;
+  msg: any;
+  isConnected: boolean = false;
+
+  // Topics
+  subscriptionTopic = '';
+  electrovalvulaTopic = '';
+  responsePayload = '';
+
+  /**
+   * Me suscribo al tópico desde el cual quiero recibir los mensajes para el dispositivo
+   */
+  constructor(private dispositivoServ: DispositivoService, private medicionServ: MedicionService, private route: ActivatedRoute, private mqttService: MqttService) {
+    
+  }
 
   ngOnInit() {
 
+  }
+
+  /**
+   * Antes de salir de la vista me desuscribo de los tópicos
+   */
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   async ionViewWillEnter() {
     let idDipositivo = +this.route.snapshot.paramMap.get('id');
     this.dispositivo = await this.dispositivoServ.getDispositivo(idDipositivo);
     this.id = idDipositivo;
+    this.suscription();
+    // Obtengo la última medición y el último estado de la electroválvula
     this.medicion = await this.medicionServ.getMedicion(idDipositivo);
+    this.estadoEv = await this.dispositivoServ.getEstadoEv(idDipositivo);
   }
 
+  /**
+   * Una vez cargada la página, genero los gráficos y actualizo los valores
+   */
   ionViewDidEnter() {
     this.generarChart(this.dispositivo);
     this.updateChart(+this.medicion.temp, +this.medicion.hum);
@@ -51,26 +86,9 @@ export class DispositivoPage implements OnInit {
    * para almacenar el log de cuando se cierra la válvula y almacenar la nueva última lectura
    */
   operarElectrovalvula() {
-    this.dispositivoServ.postElectrovalvula(1,this.dispositivo.electrovalvulaId);
-
-    // ************************************************************************************
-    // Simulo lecturas del sensor para cerrar la válvula y enviar la nueva medición
-    // ************************************************************************************
-    let valor = 100;
-    const intervalObj = setInterval(() => {
-      valor = Math.random();
-      valor = Math.floor(valor * 100);
-      console.log(valor);
-      if (valor < 30) {
-        clearInterval(intervalObj);
-        this.dispositivoServ.postElectrovalvula(0,this.dispositivo.electrovalvulaId);
-        this.medicionServ.postMedicion(valor, this.dispositivo.dispositivoId);
-        this.updateChart(valor, 1);
-      }
-    }, 500);
-    // ************************************************************************************
-    // ************************************************************************************
-    
+    this.estadoEv = this.estadoEv ? 0 : 1;
+    this.sendmsg(this.electrovalvulaTopic, this.estadoEv.toString());
+    this.dispositivoServ.postElectrovalvula(+this.estadoEv, this.dispositivo.electrovalvulaId);
   }
 
   updateChart(newTemp: number, newHum: number) {
@@ -237,6 +255,34 @@ export class DispositivoPage implements OnInit {
     this.myChart = Highcharts.chart('highcharts', this.chartOptions);
 
     this.myChart2 = Highcharts.chart('highcharts2', this.chartOptions2);
+  }
+
+  /**
+   * Publico el mensaje en el tópico indicado
+   * @param topic String
+   * @param message String
+   */
+  sendmsg(topic, message): void {
+    this.mqttService.unsafePublish(topic, message, { qos: 1, retain: true });
+  }
+
+  /**
+   * Genero los tópicos acorde al id del dispositivo y me suscribo al tópico correspondiente
+   */
+  suscription(): void {
+    this.subscriptionTopic = this.id+'/sensor';
+    this.electrovalvulaTopic = this.id+'/actuador';
+    // this.responsePayload = this.id+'/sensor';
+
+    this.subscription = this.mqttService.observe(this.subscriptionTopic).subscribe((message: IMqttMessage) => {
+      this.msg = message.payload.toString();
+      console.log(this.msg);
+      
+      // separo datos del mensaje JSON recibido para actualizar los gauges
+      let obj = JSON.parse(this.msg);
+      console.log(obj);
+      this.updateChart(obj.temp, obj.hum);
+    });
   }
 
 }
