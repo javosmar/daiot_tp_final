@@ -12,7 +12,7 @@
 
 <ion-content>
 
-  <ion-row>
+  <ion-row class="centrado">
     <ion-col sizeXl="6" text-center>
 
       <ion-card>
@@ -22,12 +22,16 @@
           <ion-row>
             <ion-col col-4>
               <ion-item>
-                Fecha
+                <ion-label class="texto">
+                  Fecha
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col col-4>
               <ion-item>
-                Valor
+                <ion-label class="texto">
+                  Valor
+                </ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -35,12 +39,16 @@
           <ion-row *ngFor="let riego of riegos">
             <ion-col col-4>
               <ion-item>
-                {{riego.fecha | formatoFecha}}
+                <ion-label class="texto">
+                  {{riego.fecha | formatoFecha}}
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col col-4>
               <ion-item>
-                {{riego.apertura}}
+                <ion-label class="texto">
+                  {{riego.apertura}}
+                </ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
