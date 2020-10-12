@@ -3,6 +3,7 @@
 API/db/data
 API/node_modules
 API/nodered
+API/mosquitto
 
 # Carpetas del frontend
 
