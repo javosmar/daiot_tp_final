@@ -276,11 +276,11 @@ export class DispositivoPage implements OnInit, OnDestroy {
 
     this.subscription = this.mqttService.observe(this.subscriptionTopic).subscribe((message: IMqttMessage) => {
       this.msg = message.payload.toString();
-      console.log(this.msg);
+      // console.log(this.msg);
       
       // separo datos del mensaje JSON recibido para actualizar los gauges
       let obj = JSON.parse(this.msg);
-      console.log(obj);
+      // console.log(obj);
       this.updateChart(obj.temp, obj.hum);
     });
   }

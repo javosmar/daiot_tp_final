@@ -21,14 +21,26 @@ export class MedicionesPage implements OnInit {
   chartLabels: Label[];
 
   chartOptions = {
+    elements: {
+      line: {
+        tension: 0 // disables bezier curves
+      }
+    },
+    animation: {
+      duration: 0 // general animation time
+    },
+    hover: {
+      animationDuration: 0 // duration of animations when hovering an item
+    },
+    responsiveAnimationDuration: 0, // animation duration after a resize
     responsive: true,
     title: {
       display: true,
-      text: 'Temperatura'
+      text: 'Historial de lecturas'
     },
     pan: {
       enabled: true,
-      mode: 'xy'
+      mode: 'x'
     },
     zoom: {
       enabled: true,
@@ -37,10 +49,7 @@ export class MedicionesPage implements OnInit {
     scales: {
       yAxes: [{
         ticks: {
-          // the data minimum used for determining the ticks is Math.min(dataMin, suggestedMin)
           suggestedMin: 0,
-
-          // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
           suggestedMax: 50
         }
       }],
@@ -80,15 +89,15 @@ export class MedicionesPage implements OnInit {
     this.chartData[0].data = [];
     this.chartData[1].data = [];
 
-    console.log(this.mediciones);
+    // console.log(this.mediciones);
 
     for (let entry of this.mediciones) {
       this.chartLabels.push(entry.fecha);
       this.chartData[0].data.push(entry['temp']);
       this.chartData[1].data.push(entry['hum']);
     }
-    console.log(this.chartLabels);
-    console.log(this.chartData);
+    // console.log(this.chartLabels);
+    // console.log(this.chartData);
   }
 
   typeChanged(e) {

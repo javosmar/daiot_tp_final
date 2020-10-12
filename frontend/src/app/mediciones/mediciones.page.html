@@ -16,8 +16,8 @@
 
 <ion-content>
 
-  <ion-row>
-    <ion-col sizeXl="6" text-center>
+  <ion-row class="centrado">
+    <ion-col sizeXl="6">
 
       <ion-card>
         <ion-card-header>
@@ -56,19 +56,25 @@
           </ion-card-header>
 
           <ion-row>
-            <ion-col col-4 text-center>
+            <ion-col col-4>
               <ion-item>
-                Fecha
+                <ion-label class="texto">
+                  Fecha
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col col-4 text-center>
               <ion-item>
-                Temperatura
+                <ion-label class="texto">
+                  Temperatura
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col col-4 text-center>
               <ion-item>
-                Humedad
+                <ion-label class="texto">
+                  Humedad
+                </ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -76,17 +82,23 @@
           <ion-row *ngFor="let medicion of mediciones">
             <ion-col col-4>
               <ion-item>
-                {{medicion.fecha | formatoFecha}}
+                <ion-label class="texto">
+                  {{medicion.fecha | formatoFecha}}
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col col-4>
               <ion-item>
-                {{medicion.temp}}
+                <ion-label class="texto">
+                  {{medicion.temp}}
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col col-4>
               <ion-item>
-                {{medicion.hum}}
+                <ion-label class="texto">
+                  {{medicion.hum}}
+                </ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -103,5 +115,5 @@
 
     </ion-col>
   </ion-row>
-
+  
 </ion-content>

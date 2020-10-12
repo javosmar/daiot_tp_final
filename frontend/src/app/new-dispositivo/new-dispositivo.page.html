@@ -13,14 +13,14 @@
   <!-- TARJETAS -->
   <ion-grid>
 
-    <ion-row>
+    <ion-row class="centrado">
 
-      <ion-col>
+      <ion-col sizeXl="6">
 
         <ion-card>
           <ion-card-header>
             <ion-card-title>
-              Registre los datos del nuevo dispositivo
+                Registre los datos del nuevo dispositivo
             </ion-card-title>
             <ion-card-subtitle>
 
@@ -51,7 +51,7 @@
               </div>
               <br>
 
-              <ion-button color="success" type="submit" [disabled]="formGroup.invalid">Guardar</ion-button>
+              <ion-button color="success" type="submit" [disabled]="formGroup.invalid" routerLink="/home">Guardar</ion-button>
 
             </form>
 
