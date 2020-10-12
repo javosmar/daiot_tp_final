@@ -43,9 +43,13 @@ export class DispositivoService {
   /**
    * Crea un nuevo dispositivo y lo envía a la API para ser almacenado
    */
-  insertarUno() {
-    const url = this.url + '/api/dispositivo';
-    this.httpServ.post(this.url, { nombre: "Martin", apellido: "Acosta" });
+  nuevoDispositivo(obj) {
+    const url = this.url + '/api/dispositivo/new_device';
+    console.log(obj);
+    return this.httpServ.post(url, obj).toPromise().then((result) => {
+      console.log(result);
+      return result;
+    });
   }
 
   /**

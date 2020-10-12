@@ -60,31 +60,42 @@ router.post('/electrovalvula', (req, res, next) => {
 });
 
 /**
- * Guardo en la tabla 'Dispositivos' un nuevo dispositivo
- * @param {nombre, ubicacion, electrovalvulaId}
+ * Guardo un nuevo dispositivo en la tabla 'Dispositivos'
+ * @param {clientId, nombre, ubicacion}
  */
 router.post('/new_device', (req, res, next) => {
-    const { nombre, ubicacion } = req.body;
+    const { clientId, nombre, ubicacion } = req.body;
+    console.log(req.body);
     
-    //  Convierto el formato de la fecha para guardar en la DB ( 2020-08-15T22:59:40.027Z -> 2020-08-15 22:59:40 )
-    // const newFecha = new Date(fecha).toISOString().replace(/T/, ' ').replace(/\..+/, '');
-    pool.query('INSERT INTO Electrovalvulas (nombre) VALUES (?)', ["eL"+ubicacion], function (err, result) {
+    // Consulto si existe el clientId en la DB
+    pool.query('SELECT * FROM Dispositivos WHERE clientId = ?', [clientId], function (err, result) {
         if (err) {
-            res.status(500).json({ msg: 'Error en la consulta a la DB' });
+            res.status(500).send('Error en la consulta');
         }
-        const electrovalvulaId = result.insertId;
-        // console.log(result.insertId);
-        // res.status(200).json({ msg: 'Valores almacenados en la DB' });
-        pool.query('INSERT INTO Dispositivos (nombre, ubicacion, electrovalvulaId) VALUES (?,?,?)', [nombre, ubicacion, electrovalvulaId], function (err, result) {
-            if (err) {
-                res.status(500).json({ msg: 'Error en la consulta a la DB' });
-            }
-            console.log(result);
-            const dispositivoId = result.insertId;
-            res.status(200).json({ msg: 'Valores almacenados en la DB', dispositivoId: dispositivoId });
-        });
+        
+        // Si el clientId ya está registrado, devuelvo un error
+        // Si no existe el dispositivo, almaceno una nueva EV y un nuevo dispositivo
+        if(result[0]){
+            res.status(500).json({ msg: 'El dispositivo ya existe' });
+        }
+        else {
+            pool.query('INSERT INTO Electrovalvulas (nombre) VALUES (?)', ["eL"+ubicacion], function (err, result) {
+                if (err) {
+                    res.status(500).json({ msg: 'Error en la consulta a la DB' });
+                }
+                const electrovalvulaId = result.insertId;
+                console.log(clientId, nombre, ubicacion, electrovalvulaId);
+                pool.query('INSERT INTO Dispositivos (clientId, nombre, ubicacion, electrovalvulaId) VALUES (?,?,?,?)', [clientId, nombre, ubicacion, electrovalvulaId], function (err, result) {
+                    if (err) {
+                        res.status(500).json({ msg: 'Error en la consulta a la DB' });
+                    }
+                    console.log(result);
+                    const dispositivoId = result.insertId;
+                    res.status(200).json({ msg: 'Dispositivo almacenado en la DB', dispositivoId: dispositivoId });
+                });
+            });
+        }
     });
-    
 });
 
 module.exports = router;
