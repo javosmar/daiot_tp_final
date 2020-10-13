@@ -26,7 +26,7 @@ const routes: Routes = [
   {
     path: 'new-dispositivo',
     loadChildren: () => import('./new-dispositivo/new-dispositivo.module').then( m => m.NewDispositivoPageModule)
-  },
+  }
 ];
 
 @NgModule({

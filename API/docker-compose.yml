@@ -10,13 +10,15 @@ version: "3"
 services:
   node-red:
     container_name: nodered_docker
-    image: nodered-daiot:latest
+    image: nodered/node-red:latest
     environment:
       - TZ=Europe/Amsterdam
     ports:
       - "5600:1880"
     networks:
       - daiot-net
+    volumes:
+      - "./node-red:/data"
   
   mosquitto:
     container_name: mosquitto_docker
