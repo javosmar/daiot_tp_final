@@ -13,6 +13,8 @@ declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
 
+import { LoadingController } from '@ionic/angular';
+
 @Component({
   selector: 'app-dispositivo',
   templateUrl: './dispositivo.page.html',
@@ -22,6 +24,8 @@ export class DispositivoPage implements OnInit, OnDestroy {
 
   private valorObtenido: number = 0;
   private estadoEv: number = 0;
+
+  loading: any;
 
   // Gauges Charts
   public myChart;
@@ -48,8 +52,13 @@ export class DispositivoPage implements OnInit, OnDestroy {
   /**
    * Me suscribo al tópico desde el cual quiero recibir los mensajes para el dispositivo
    */
-  constructor(private dispositivoServ: DispositivoService, private medicionServ: MedicionService, private route: ActivatedRoute, private mqttService: MqttService) {
-    
+  constructor(private dispositivoServ: DispositivoService,
+    private medicionServ: MedicionService,
+    private route: ActivatedRoute,
+    private mqttService: MqttService,
+    private loadingCtrl: LoadingController
+  ) {
+
   }
 
   ngOnInit() {
@@ -64,6 +73,9 @@ export class DispositivoPage implements OnInit, OnDestroy {
   }
 
   async ionViewWillEnter() {
+    const loader = await this.presentLoading('Espere...');
+    await loader.present();
+
     let idDipositivo = +this.route.snapshot.paramMap.get('id');
     this.dispositivo = await this.dispositivoServ.getDispositivo(idDipositivo);
     this.id = idDipositivo;
@@ -71,6 +83,8 @@ export class DispositivoPage implements OnInit, OnDestroy {
     // Obtengo la última medición y el último estado de la electroválvula
     this.medicion = await this.medicionServ.getMedicion(idDipositivo);
     this.estadoEv = await this.dispositivoServ.getEstadoEv(idDipositivo);
+
+    loader.dismiss();
   }
 
   /**
@@ -270,19 +284,28 @@ export class DispositivoPage implements OnInit, OnDestroy {
    * Genero los tópicos acorde al id del dispositivo y me suscribo al tópico correspondiente
    */
   suscription(): void {
-    this.subscriptionTopic = this.id+'/sensor';
-    this.electrovalvulaTopic = this.id+'/actuador';
+    this.subscriptionTopic = this.id + '/sensor';
+    this.electrovalvulaTopic = this.id + '/actuador';
     // this.responsePayload = this.id+'/sensor';
 
     this.subscription = this.mqttService.observe(this.subscriptionTopic).subscribe((message: IMqttMessage) => {
       this.msg = message.payload.toString();
       // console.log(this.msg);
-      
+
       // separo datos del mensaje JSON recibido para actualizar los gauges
       let obj = JSON.parse(this.msg);
       // console.log(obj);
       this.updateChart(obj.temp, obj.hum);
     });
+  }
+
+  async presentLoading(message: string) {
+    this.loading = await this.loadingCtrl.create({
+      cssClass: 'my-custom-class',
+      message
+      // duration: 2000
+    });
+    return this.loading;
   }
 
 }
