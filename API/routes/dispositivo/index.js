@@ -15,6 +15,18 @@ router.get('/todos', (req, res, next) => {
 });
 
 /**
+ * Obtengo la lista de dispositivos habilitados
+ */
+router.get('/habilitados', (req, res, next) => {
+    pool.query('SELECT * FROM Dispositivos WHERE habilitado=1', function (err, result) {
+        if (err) {
+            res.status(500).send('Error en la consulta');
+        }
+        res.status(200).json(result);
+    });
+});
+
+/**
  * Obtengo el dispositivo con el id recibido como parámetro
  * @param id ID del dispositivo
  */
@@ -65,7 +77,6 @@ router.post('/electrovalvula', (req, res, next) => {
  */
 router.post('/new_device', (req, res, next) => {
     const { clientId, nombre, ubicacion } = req.body;
-    console.log(req.body);
     
     // Consulto si existe el clientId en la DB
     pool.query('SELECT * FROM Dispositivos WHERE clientId = ?', [clientId], function (err, result) {
@@ -84,17 +95,32 @@ router.post('/new_device', (req, res, next) => {
                     res.status(500).json({ msg: 'Error en la consulta a la DB' });
                 }
                 const electrovalvulaId = result.insertId;
-                console.log(clientId, nombre, ubicacion, electrovalvulaId);
-                pool.query('INSERT INTO Dispositivos (clientId, nombre, ubicacion, electrovalvulaId) VALUES (?,?,?,?)', [clientId, nombre, ubicacion, electrovalvulaId], function (err, result) {
+                pool.query('INSERT INTO Dispositivos (clientId, nombre, ubicacion, habilitado, electrovalvulaId) VALUES (?,?,?,?,?)', [clientId, nombre, ubicacion, 0, electrovalvulaId], function (err, result) {
                     if (err) {
                         res.status(500).json({ msg: 'Error en la consulta a la DB' });
                     }
-                    console.log(result);
                     const dispositivoId = result.insertId;
                     res.status(200).json({ msg: 'Dispositivo almacenado en la DB', dispositivoId: dispositivoId });
                 });
             });
         }
+    });
+});
+
+/**
+ * Edito el dispositivo con el id recibido como parámetro
+ * @param id ID del dispositivo
+ * @param {nombre, ubicacion, habilitado}
+ */
+router.put('/update/:id', (req, res, next) => {
+    const { id } = req.params;
+    const { clientId, nombre, ubicacion, habilitado } = req.body;
+    pool.query('UPDATE Dispositivos SET clientId=?, nombre=?, ubicacion=?, habilitado=? WHERE dispositivoId=?', [clientId, nombre, ubicacion, habilitado, id], function (err, result) {
+        if (err) {
+            res.status(500).json({ msg: 'Error en la consulta a la DB' });
+        }
+        const dispositivoId = result.insertId;
+        res.status(200).json({ msg: 'Dispositivo actualizado en la DB' });
     });
 });
 

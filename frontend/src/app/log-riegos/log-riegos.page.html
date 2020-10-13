@@ -30,7 +30,7 @@
             <ion-col col-4>
               <ion-item>
                 <ion-label class="texto">
-                  Valor
+                  Estado de la Electroválvula
                 </ion-label>
               </ion-item>
             </ion-col>
@@ -47,7 +47,7 @@
             <ion-col col-4>
               <ion-item>
                 <ion-label class="texto">
-                  {{riego.apertura}}
+                  {{riego.apertura | formatoRiego}}
                 </ion-label>
               </ion-item>
             </ion-col>
@@ -62,3 +62,9 @@
 
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar class="centrado">
+    <ion-title style="text-align: center;">DAIoT - FIUBA - Martin Acosta</ion-title>
+  </ion-toolbar>
+</ion-footer>

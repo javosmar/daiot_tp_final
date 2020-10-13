@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `DAM`.`Dispositivos` (
   `clientId` VARCHAR(200) NULL,
   `nombre` VARCHAR(200) NULL,
   `ubicacion` VARCHAR(200) NULL,
+  `habilitado` BOOLEAN,
   `electrovalvulaId` INT NOT NULL,
   PRIMARY KEY (`dispositivoId`, `electrovalvulaId`),
   INDEX `fk_Dispositivos_Electrovalvulas1_idx` (`electrovalvulaId` ASC) ,
@@ -69,23 +70,6 @@ CREATE TABLE IF NOT EXISTS `DAM`.`Mediciones` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-/* DROP TABLE IF EXISTS `DAM`.`Mediciones` ;
-
-CREATE TABLE IF NOT EXISTS `DAM`.`Mediciones` (
-  `medicionId` INT NOT NULL AUTO_INCREMENT,
-  `fecha` DATETIME NULL,
-  `valor` VARCHAR(100) NULL,
-  `dispositivoId` INT NOT NULL,
-  PRIMARY KEY (`medicionId`, `dispositivoId`),
-  INDEX `fk_Mediciones_Dispositivos_idx` (`dispositivoId` ASC) ,
-  CONSTRAINT `fk_Mediciones_Dispositivos`
-    FOREIGN KEY (`dispositivoId`)
-    REFERENCES `DAM`.`Dispositivos` (`dispositivoId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB; */
-
 
 -- -----------------------------------------------------
 -- Table `DAM`.`Log_Riegos`
@@ -122,12 +106,12 @@ INSERT INTO DAM.Electrovalvulas (nombre) VALUES ('eLHabitacion1');
 INSERT INTO DAM.Electrovalvulas (nombre) VALUES ('eLHabitacion2');
 
 
-INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-1','Sensor 1', 'Patio',1);
-INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-2','Sensor 2', 'Cocina',2);
-INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-3','Sensor 3', 'Jardin Delantero',3);
-INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-4','Sensor 4', 'Living',4);
-INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-5','Sensor 5', 'Habitacion 1',5);
-INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,electrovalvulaId) VALUES ('ESP32-6','Sensor 6', 'Habitacion 2',6);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,habilitado,electrovalvulaId) VALUES ('ESP32-1','Sensor 1', 'Patio',0,1);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,habilitado,electrovalvulaId) VALUES ('ESP32-2','Sensor 2', 'Cocina',0,2);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,habilitado,electrovalvulaId) VALUES ('ESP32-3','Sensor 3', 'Jardin Delantero',0,3);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,habilitado,electrovalvulaId) VALUES ('ESP32-4','Sensor 4', 'Living',0,4);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,habilitado,electrovalvulaId) VALUES ('ESP32-5','Sensor 5', 'Habitacion 1',0,5);
+INSERT INTO DAM.Dispositivos (clientId,nombre,ubicacion,habilitado,electrovalvulaId) VALUES ('ESP32-6','Sensor 6', 'Habitacion 2',0,6);
 
 
 INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),60,14,1 );
@@ -141,15 +125,3 @@ INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timest
 INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),44,90,4 );
 INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),61,87,5 );
 INSERT INTO DAM.Mediciones (fecha,temp,hum,dispositivoId) VALUES (current_timestamp(),12,87,2 );
-
-/* INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),60,1 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),40,1 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),30,2 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),50,3 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),33,5 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),17,4 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),29,6 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),20,1 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),44,4 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),61,5 );
-INSERT INTO DAM.Mediciones (fecha,valor,dispositivoId) VALUES (current_timestamp(),12,2 ); */
