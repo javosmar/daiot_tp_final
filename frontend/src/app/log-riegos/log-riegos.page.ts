@@ -37,7 +37,6 @@ export class LogRiegosPage implements OnInit {
     this.loading = await this.loadingCtrl.create({
       cssClass: 'my-custom-class',
       message
-      // duration: 2000
     });
     return this.loading;
   }

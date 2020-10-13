@@ -3,8 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MedicionService } from '../services/medicion.service';
 import { Medicion } from '../model/Medicion';
 
-import { HttpClient } from '@angular/common/http';
-
 import { ChartDataSets } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
@@ -19,11 +17,12 @@ export class MedicionesPage implements OnInit {
 
   public mediciones: Medicion[];
 
+  // Opciones de gráficos
   chartData: ChartDataSets[] = [{ data: [], label: 'Temperatura' }, { data: [], label: 'Humedad' }];
   chartLabels: Label[];
 
   chartOptions = {
-    elements: {
+    /* elements: {
       line: {
         tension: 0 // disables bezier curves
       }
@@ -34,7 +33,7 @@ export class MedicionesPage implements OnInit {
     hover: {
       animationDuration: 0 // duration of animations when hovering an item
     },
-    responsiveAnimationDuration: 0, // animation duration after a resize
+    responsiveAnimationDuration: 0, // animation duration after a resize */
     responsive: true,
     title: {
       display: true,
@@ -76,13 +75,15 @@ export class MedicionesPage implements OnInit {
 
   constructor(private medicionServ: MedicionService, 
       private route: ActivatedRoute, 
-      private http: HttpClient, 
       private loadingCtrl: LoadingController
     ) { }
 
   ngOnInit() {
   }
 
+  /**
+   * Despliego la pantalla de carga mientras pido los datos al servicio y los vuelco al array 'mediciones'
+   */
   async ionViewWillEnter() {
     const loader = await this.presentLoading('Espere...');
     await loader.present();
@@ -96,6 +97,9 @@ export class MedicionesPage implements OnInit {
     loader.dismiss();
   }
 
+  /**
+   * Limpio el array de datos y etiquetas antes de cargarlo nuevamente con las mediciones obtenidas
+   */
   async getData() {
     this.chartLabels = [];
     this.chartData[0].data = [];
@@ -108,11 +112,14 @@ export class MedicionesPage implements OnInit {
     }
   }
 
+  /**
+   * Muestro la pantalla de carga, con el texto pasado por parámetro
+   * @param message string
+   */
   async presentLoading(message: string) {
     this.loading = await this.loadingCtrl.create({
       cssClass: 'my-custom-class',
       message
-      // duration: 2000
     });
     return this.loading;
   }

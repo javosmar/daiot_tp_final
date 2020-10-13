@@ -69,7 +69,6 @@ export class MedicionService {
       valor,
       id
     };
-    console.log(dato);
     return this.httpServ.post(url, dato).toPromise().then((result) => {
       return result;
     });

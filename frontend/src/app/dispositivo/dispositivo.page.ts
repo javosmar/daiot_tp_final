@@ -35,7 +35,7 @@ export class DispositivoPage implements OnInit, OnDestroy {
 
   // Models initialization
   id: number;
-  public dispositivo = new Dispositivo(0, " ", " ", 0);
+  public dispositivo = new Dispositivo(" ", 0, " ", " ", false, 0);
   public medicion = new Medicion(0, ' ', 0, 0, 0);
 
   // MQTT
@@ -84,6 +84,11 @@ export class DispositivoPage implements OnInit, OnDestroy {
     this.medicion = await this.medicionServ.getMedicion(idDipositivo);
     this.estadoEv = await this.dispositivoServ.getEstadoEv(idDipositivo);
 
+    this.generarChart(this.dispositivo);
+    if(this.medicion != null){
+      this.updateChart(+this.medicion.temp, +this.medicion.hum);
+    }
+
     loader.dismiss();
   }
 
@@ -91,8 +96,8 @@ export class DispositivoPage implements OnInit, OnDestroy {
    * Una vez cargada la página, genero los gráficos y actualizo los valores
    */
   ionViewDidEnter() {
-    this.generarChart(this.dispositivo);
-    this.updateChart(+this.medicion.temp, +this.medicion.hum);
+    // this.generarChart(this.dispositivo);
+    // this.updateChart(+this.medicion.temp, +this.medicion.hum);
   }
 
   /**
@@ -282,19 +287,15 @@ export class DispositivoPage implements OnInit, OnDestroy {
 
   /**
    * Genero los tópicos acorde al id del dispositivo y me suscribo al tópico correspondiente
+   * definiendo el callback para mensajes entrantes
    */
   suscription(): void {
     this.subscriptionTopic = this.id + '/sensor';
     this.electrovalvulaTopic = this.id + '/actuador';
-    // this.responsePayload = this.id+'/sensor';
-
     this.subscription = this.mqttService.observe(this.subscriptionTopic).subscribe((message: IMqttMessage) => {
       this.msg = message.payload.toString();
-      // console.log(this.msg);
-
       // separo datos del mensaje JSON recibido para actualizar los gauges
       let obj = JSON.parse(this.msg);
-      // console.log(obj);
       this.updateChart(obj.temp, obj.hum);
     });
   }
@@ -303,7 +304,6 @@ export class DispositivoPage implements OnInit, OnDestroy {
     this.loading = await this.loadingCtrl.create({
       cssClass: 'my-custom-class',
       message
-      // duration: 2000
     });
     return this.loading;
   }

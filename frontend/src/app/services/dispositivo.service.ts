@@ -16,8 +16,21 @@ export class DispositivoService {
   /**
    * Obtiene todos los dispositivos
    */
-  getListado(): Promise<Dispositivo[]> {
+  getListadoTodos(): Promise<Dispositivo[]> {
     const url = this.url + '/api/dispositivo/todos';
+    return this.httpServ.get(url).toPromise().then((objeto: Dispositivo) => {
+      return objeto;
+    }).catch((err) => {
+      console.log('Error en la consulta');
+      return null;
+    });
+  }
+
+  /**
+   * Obtiene los dispositivos habilitados
+   */
+  getListadoHabilitados(): Promise<Dispositivo[]> {
+    const url = this.url + '/api/dispositivo/habilitados';
     return this.httpServ.get(url).toPromise().then((objeto: Dispositivo) => {
       return objeto;
     }).catch((err) => {
@@ -36,7 +49,7 @@ export class DispositivoService {
       return objeto;
     }).catch((err) => {
       console.log('Error en la consulta');
-      return new Dispositivo(1, 'a', 'a', 1);
+      return new Dispositivo('a', 1, 'a', 'a', false, 1);
     });
   }
 
@@ -45,9 +58,17 @@ export class DispositivoService {
    */
   nuevoDispositivo(obj) {
     const url = this.url + '/api/dispositivo/new_device';
-    console.log(obj);
     return this.httpServ.post(url, obj).toPromise().then((result) => {
-      console.log(result);
+      return result;
+    });
+  }
+
+  /**
+   * Edita un dispositivo y lo envía a la API para ser almacenado
+   */
+  editarDispositivo(obj) {
+    const url = `${this.url}/api/dispositivo/update/${obj.dispositivoId}`;
+    return this.httpServ.put(url, obj).toPromise().then((result) => {
       return result;
     });
   }

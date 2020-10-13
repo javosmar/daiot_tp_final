@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Mi Aplicación IoT</ion-title>
+    <ion-title>Dashboard</ion-title>
   </ion-toolbar>
 
 </ion-header>
@@ -21,7 +21,7 @@
 
     <ion-row>
 
-      <ion-col sizeSm="12" size-lg="3" *ngFor="let e of array">
+      <ion-col size-xs=12 size-lg="3" *ngFor="let e of array">
 
         <ion-card button routerLink="/dispositivo/{{e.dispositivoId}}">
           <ion-card-header>
@@ -47,3 +47,9 @@
   </ion-grid>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar class="centrado">
+    <ion-title style="text-align: center;">DAIoT - FIUBA - Martin Acosta</ion-title>
+  </ion-toolbar>
+</ion-footer>

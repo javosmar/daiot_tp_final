@@ -26,6 +26,10 @@ const routes: Routes = [
   {
     path: 'new-dispositivo',
     loadChildren: () => import('./new-dispositivo/new-dispositivo.module').then( m => m.NewDispositivoPageModule)
+  },
+  {
+    path: 'edit-dispositivo/:id',
+    loadChildren: () => import('./edit-dispositivo/edit-dispositivo.module').then( m => m.EditDispositivoPageModule)
   }
 ];
 

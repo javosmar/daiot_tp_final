@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DispositivoService } from '../services/dispositivo.service';
-import { Dispositivo } from "../model/Dispositivo";
 
 @Component({
   selector: 'app-home',
@@ -13,10 +12,11 @@ export class HomePage {
 
   constructor(public dispositivoServ: DispositivoService) {}
 
-  ngOnInit(): void {
-    this.dispositivoServ.getListado().then((listado) => {
-      this.array = listado;
-    });
+  async ngOnInit(): Promise<void> {
+  }
+
+  async ionViewWillEnter(): Promise<void> {
+    this.array = await this.dispositivoServ.getListadoHabilitados();
   }
 
 }
