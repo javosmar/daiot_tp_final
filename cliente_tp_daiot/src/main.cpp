@@ -1,25 +1,34 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <keys.h>
+#include <DHT.h>
 
 WiFiClient espClient;
 PubSubClient client(espClient);
+
+// Time Configurations
+int periodoMuestreo = 2000;
 unsigned long lastMsg = 0;
+
+// MQTT Configurations
 #define MSG_BUFFER_SIZE (100)
 #define TOPIC_BUFFER_SIZE (30)
 char msg[MSG_BUFFER_SIZE];
 char topic[TOPIC_BUFFER_SIZE];
-int value = 0, periodoMuestreo = 5000;
 
+// Device Configurations
 int deviceId = 0;
 String altaTopic = clientId + "/alta";
 String inTopic = "/actuador";
 
+// DHT Configurations
+#define DHTPIN 4
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+
 void setup_wifi()
 {
-
   delay(10);
-  // We start by connecting to a WiFi network
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -81,7 +90,6 @@ void reconnect()
   while (!client.connected())
   {
     Serial.print("Attempting MQTT connection...");
-    // Create a random client ID
     if (client.connect(clientId.c_str()))
     {
       Serial.println("connected");
@@ -106,11 +114,11 @@ void setup()
   Serial.println(mqtt_server);
   client.setServer(mqtt_server, 1884);
   client.setCallback(callback);
+  dht.begin();
 }
 
 void loop()
 {
-
   if (!client.connected())
   {
     reconnect();
@@ -123,15 +131,18 @@ void loop()
     lastMsg = now;
     if (deviceId > 0)
     {
-      ++value;
-      int temp = random(100);
-      int hum = random(100);
-      // String cadena = "{\"temp\": %d,\"hum\": %d,\"id\": %d}", temp,hum,deviceId;
-      snprintf(topic, TOPIC_BUFFER_SIZE, "%d/sensor", deviceId);
-      snprintf(msg, MSG_BUFFER_SIZE, "{\"temp\": %d,\"hum\": %d,\"id\": %d}", temp, hum, deviceId);
-      Serial.print("Publish message: ");
-      Serial.println(msg);
-      client.publish(topic, msg);
+      // int temp = random(100);
+      // int hum = random(100);
+      int temp = int(dht.readTemperature());
+      int hum = int(dht.readHumidity());
+      if (!isnan(temp) && !isnan(hum))
+      {
+        snprintf(topic, TOPIC_BUFFER_SIZE, "%d/sensor", deviceId);
+        snprintf(msg, MSG_BUFFER_SIZE, "{\"temp\": %d,\"hum\": %d,\"id\": %d}", temp, hum, deviceId);
+        Serial.print("Publish message: ");
+        Serial.println(msg);
+        client.publish(topic, msg);
+      }
     }
     else
     {
