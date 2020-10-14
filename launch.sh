@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd dam_tp_final/API
-./servicios.sh
-cd ../proyectoDam
+cd daiot_tp_final/API
+docker-compose up -d
+cd ../frontend
 npm install && npm run start
