@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd daiot_tp_final/API
+cd API
 docker-compose up -d
 cd ../frontend
 npm install && npm run start

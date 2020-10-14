@@ -5,7 +5,7 @@ El siguiente repositorio es la presentación del trabajo final de la asignatura 
 ## Descripción 📋
 El proyecto es un prototipo de sistema para el control sobre sensores y actuadores, pudiendo realizar las lecturas en tiempo real, visualizar gráficas temporales y accionar una salida. También cuenta con un log de lecturas, un log de accionamientos y la administración de dispositivos.
 ## Captura de la aplicación 📸
-![alt text](https://i.ibb.co/5WrxzvC/tp-daiot.gif)
+![alt text](https://i.ibb.co/kJkLYKy/tp-daiot2.gif)
 ## Correr la aplicación ▶️
 En primer lugar se debe clonar o descargar el repositorio
 ```sh
